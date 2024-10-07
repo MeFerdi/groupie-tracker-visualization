@@ -1,62 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Name}} - Artist Details</title>
-    <link rel="stylesheet" type="text/css" href="/static/artist.css" />
+    <title>{{.Artist.Name}} - Artist Details</title>
+    <link rel="stylesheet" type="text/css" href="/static/combined.css" />
 </head>
-
 <body>
-    {{if .}}
-    <div class="artist">
-        <img src="{{.Image}}" alt="{{.Name}} Image">
-        <div class="details">
-            <h2>{{.Name}}</h2>
+    <div class="container">
+        <div class="artist-header">
+            <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Image" class="artist-image">
+            <h2>{{.Artist.Name}}</h2>
+        </div>
+        
+        <div class="artist-details">
             <p><strong>Members:</strong></p>
             <ul class="members-list">
-                {{range .Members}}
+                {{range .Artist.Members}}
                 <li>{{.}}</li>
                 {{end}}
             </ul>
-            <p><strong>Creation Date:</strong> {{.CreationDate}}</p>
-            <p><strong>First Album:</strong> {{.FirstAlbum}}</p>
+            <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+            <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
 
             <div class="links">
-                <p><strong>Locations:</strong>
-                    {{if .ID}}
-                    <a href="/locations/{{.ID}}">View Locations</a>
+                <p><strong></strong>
+                    {{if .Locations.Locations}}
+                    <a href="#locations">View Locations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
 
-                <p><strong>Dates:</strong>
-                    {{if .ID}}
-                    <a href="/dates/{{.ID}}">View Dates</a>
+                <p><strong></strong>
+                    {{if .Dates.Dates}}
+                    <a href="#dates">View Dates</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
 
-                <p><strong>Relations:</strong>
-                    {{if .ID}}
-                    <a href="/relation/{{.ID}}">View Relations</a>
+                <p><strong></strong>
+                    {{if .Relations.Locations}}
+                    <a href="#relations">View Relations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
-                <div>
-                    <button class="back-button" onclick="history.back()">← Back</button>
-                </div>
+            </div>
+
+            <div class="back-button-container">
+                <button class="back-button" onclick="history.back()">← Back</button>
             </div>
         </div>
-    </div>
-    {{else}}
-    <p>No artist information found.</p>
-    {{end}}
 
+      
+
+        <!-- Locations Section -->
+        <section id="locations">
+            <h3>Location Details</h3>
+            <ul class="location-list">
+                {{range .Locations.Locations}}
+                <li>{{.}}</li>
+                {{else}}
+                <li>No locations available</li>
+                {{end}}
+            </ul>
+        </section>
+
+          <!-- Dates Section -->
+          <section id="dates">
+            <h3>Concert Dates</h3>
+            <ul class="dates-list">
+                {{range .Dates.Dates}}
+                <li>{{.}}</li>
+                {{end}}
+            </ul>
+        </section>
+
+        <!-- Relations Section -->
+        <section id="relations">
+            <h3>Relations</h3>
+            {{range $location, $dates := .Relations.Locations}}
+            <div class="relation-card">
+                <h4>{{$location}}</h4>
+                <ul>
+                    {{range $dates}}
+                    <li>{{ . }}</li>
+                    {{else}}
+                    <li>No dates available</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{else}}
+            <div class="relation-card">
+                <h4>No relations available</h4>
+            </div>
+            {{end}}
+        </section>
+
+    </div> <!-- End of container -->
 </body>
-
 </html>
