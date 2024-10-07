@@ -57,6 +57,27 @@
     <p>No artist information found.</p>
     {{end}}
 
+    <script>
+        document.addEventListener('keydown', function(event) {
+            // Check for Alt + H
+            if (event.altKey && event.key === 'h') {
+                document.querySelector('.back-button').click(); // Click the back button
+            }
+            // Check for Alt + L
+            else if (event.altKey && event.key === 'l') {
+                window.location.href = "/locations/{{.ID}}"; // Redirect to locations page
+            }
+            // Check for Alt + D
+            else if (event.altKey && event.key === 'd') {
+                window.location.href = "/dates/{{.ID}}"; // Redirect to dates page
+            }
+            // Check for Alt + R
+            else if (event.altKey && event.key === 'r') {
+                window.location.href = "/relation/{{.ID}}"; // Redirect to relations page
+            }
+        });
+    </script>
+
 </body>
 
 </html>
