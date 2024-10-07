@@ -1,160 +1,134 @@
 body {
-    background-color: #1a1a1a;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 40px 20px;
-    /* Reduce padding for better responsiveness */
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(18, 18, 18, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(46, 196, 33, 0.1);
+    text-align: center;
+}
+
+.artist-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-}
-
-.artist {
-    background-color: #333;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
-    max-width: 1000px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    grid-gap: 40px;
     align-items: center;
+    margin-bottom: 30px;
 }
 
-.artist img {
-    border-radius: 50%;
-    max-width: 100%;
-    width: 350px;
-    height: 350px;
-    object-fit: cover;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-h2 {
-    font-size: 48px;
+.artist-image {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(46, 196, 33, 0.3);
     margin-bottom: 20px;
-    color: #2ec421;
 }
 
-.details {
-    display: flex;
-    flex-direction: column;
-    font-size: 24px;
+.artist-details {
+    margin-bottom: 30px;
 }
 
-.details p {
-    margin: 20px 0;
+h2, h3, h4 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #2ec421, #1b8e29);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
 }
 
-.details strong {
-    color: #1dbb52;
+.members-list, .dates-list, .location-list {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
 }
 
-.members-list {
-    list-style-type: disc;
-    padding-left: 20px;
+.members-list li, .dates-list li, .location-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(46, 196, 33, 0.2);
 }
 
-.members-list li {
-    margin-bottom: 10px;
+.links {
+    margin-top: 20px;
+}
+
+.links p {
+    margin: 10px 0;
 }
 
 .links a {
-    display: inline-block;
-    background-color: #1faf1a;
-    color: #1a1a1a;
-    padding: 16px 24px;
-    border-radius: 8px;
+    color: #2ec421;
     text-decoration: none;
-    margin-top: 20px;
-    font-size: 20px;
+    transition: color 0.3s ease;
 }
 
 .links a:hover {
-    background-color: #18a71f;
+    color: #1b8e29;
+    text-decoration: underline;
 }
 
-/* Centering the back button */
+.back-button-container {
+    margin-top: 30px;
+}
+
 .back-button {
-    display: inline-block;
-    background-color: #144736;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 18px;
-    margin-bottom: 20px;
+    background-color: #2ec421;
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
     cursor: pointer;
-    text-align: center;
-    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .back-button:hover {
-    background-color: #35aa17;
+    background-color: #1b8e29;
+    transform: scale(1.05);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .artist {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .artist img {
-        width: 250px;
-        height: 250px;
-    }
-
-    h2 {
-        font-size: 36px;
-    }
-
-    .details {
-        font-size: 20px;
-    }
-
-    .links a {
-        font-size: 18px;
-        padding: 12px 20px;
-    }
+section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: rgba(46, 196, 33, 0.05);
+    border-radius: 10px;
 }
 
-@media (max-width: 480px) {
-    body {
-       margin: 0px;
-       max-height: fit-content;
-    }
+.relation-card {
+    background-color: rgba(18, 18, 18, 0.8);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(46, 196, 33, 0.1);
+}
 
-    .artist {
+.relation-card h4 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.relation-card ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.relation-card li {
+    margin-bottom: 5px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .container {
         padding: 20px;
     }
 
-    .artist img {
-        height: 190px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-    }
-
-    h2 {
-        font-size: 28px;
-    }
-
-    .details {
-        font-size: 18px;
-    }
-
-    .links a {
-        font-size: 16px;
-        padding: 10px 18px;
-    }
-
-    .back-button {
-        font-size: 16px;
-        padding: 8px 16px;
+    .artist-image {
+        width: 150px;
     }
 }
