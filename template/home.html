@@ -3,11 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groupie Tracker</title>
+    <title>Groupie Tracker - Your Ultimate Music Artist Database</title>
     <link rel="stylesheet" type="text/css" href="/static/home.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Groupie Tracker</h1>
-    <button class="view-artists-button" onclick="window.location.href='/artists'">View Artists</button>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <header>
+            <h1>Groupie Tracker</h1>
+            <p class="tagline">Discover and Track Your Favorite Music Artists</p>
+        </header>
+        
+        <main>
+            <section class="description">
+                <h2>Welcome to Groupie Tracker</h2>
+                <p>Groupie Tracker is your ultimate destination for exploring and tracking music artists from around the world. Our extensive database provides you with detailed information about artists, including:</p>
+                <ul>
+                    <li>Band members and formation dates</li>
+                    <li>First album release dates</li>
+                    <li>Upcoming concert locations and dates</li>
+                    <li>Relationships between artists and venues</li>
+                </ul>
+                <p>Whether you're a die-hard fan or just curious about the music scene, Groupie Tracker has everything you need to stay informed and connected to your favorite artists.</p>
+            </section>
+            
+            <button class="view-artists-button" onclick="window.location.href='/artists'">Explore Artists</button>
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Groupie Tracker. All rights reserved.</p>
+        </footer>
+    </div>
 </body>
 </html>
