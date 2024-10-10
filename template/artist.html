@@ -5,14 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Artist.Name}} - Artist Details</title>
     <link rel="stylesheet" type="text/css" href="/static/artist.css" />
+    <style>
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #12201c5b;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .shortcut-item {
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <div class="dropdown">
+            <button>Shortcuts</button>
+            <div class="dropdown-content">
+                <div class="shortcut-item">Alt + ← : Go Back</div>
+                <div class="shortcut-item">Alt + → : Go Forward</div>
+            </div>
+        </div>
+
         <div class="artist-header">
             <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Image" class="artist-image">
             <h2>{{.Artist.Name}}</h2>
         </div>
-        
+
         <div class="artist-details">
             <p><strong>Members:</strong></p>
             <ul class="members-list">
@@ -54,9 +87,6 @@
             </div>
         </div>
 
-      
-
-        <!-- Locations Section -->
         <section id="locations">
             <h3>Location Details</h3>
             <ul class="location-list">
@@ -68,8 +98,7 @@
             </ul>
         </section>
 
-          <!-- Dates Section -->
-          <section id="dates">
+        <section id="dates">
             <h3>Concert Dates</h3>
             <ul class="dates-list">
                 {{range .Dates.Dates}}
@@ -78,7 +107,6 @@
             </ul>
         </section>
 
-        <!-- Relations Section -->
         <section id="relations">
             <h3>Relations</h3>
             {{range $location, $dates := .Relations.Locations}}
@@ -98,7 +126,16 @@
             </div>
             {{end}}
         </section>
+    </div> 
 
-    </div> <!-- End of container -->
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.altKey && event.key === 'ArrowLeft') {
+                history.back();
+            } else if (event.altKey && event.key === 'ArrowRight') {
+                history.forward();
+            }
+        });
+    </script>
 </body>
 </html>

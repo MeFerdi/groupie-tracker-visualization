@@ -68,7 +68,7 @@ Parameters:
 */
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -103,7 +103,7 @@ Parameters:
 */
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/artists/" {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -145,7 +145,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !strings.HasPrefix(r.URL.Path, "/artist/") || len(strings.Split(r.URL.Path, "/")) != 3 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -161,7 +161,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	baseURL := "https://groupietrackers.herokuapp.com/api/artists/"
 	artistResult, err := ReadArtist(baseURL, id)
 	if err != nil || artistResult.ID == 0 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 

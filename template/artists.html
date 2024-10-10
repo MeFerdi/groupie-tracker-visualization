@@ -5,10 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artists</title>
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
+    <style>
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #12201c5b;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .shortcut-item {
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
     <h1>Artists</h1>
     <div class="artists-container">
+        <div class="dropdown">
+            <button>Shortcuts</button>
+            <div class="dropdown-content">
+                <div class="shortcut-item">Alt + ← : Go Back</div>
+                <div class="shortcut-item">Alt + → : Go Forward</div>
+            </div>
+        </div>
         {{if .}}
             {{range .}}
                 <a href="/artist/{{.ID}}">
