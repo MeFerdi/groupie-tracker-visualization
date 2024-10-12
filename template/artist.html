@@ -124,21 +124,24 @@
 
         <section id="relations" class="hidden">
             <h3>Relations</h3>
-            {{range $location, $dates := .Relations.Locations}}
-            <div class="relation-card">
-                <h4>{{$location}}</h4>
-                <ul>
-                    {{range $dates}}
-                    <li>{{ . }}</li>
-                    {{else}}
-                    <li>No dates available</li>
-                    {{end}}
-                </ul>
-            </div>
+            {{if .Relations.Locations}}
+                {{range $location, $dates := .Relations.Locations}}
+                    <div class="relation-card">
+                        <h4>Location: {{$location}}</h4>
+                        <p><strong>Dates:</strong></p>
+                        <ul>
+                            {{range $dates}}
+                                <li>{{ . }}</li>
+                            {{else}}
+                                <li>No dates available</li>
+                            {{end}}
+                        </ul>
+                    </div>
+                {{end}}
             {{else}}
-            <div class="relation-card">
-                <h4>No relations available</h4>
-            </div>
+                <div class="relation-card">
+                    <h4>No relations available</h4>
+                </div>
             {{end}}
         </section>
     </div>
