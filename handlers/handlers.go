@@ -68,7 +68,7 @@ Parameters:
 */
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -103,7 +103,7 @@ Parameters:
 */
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/artists/" {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -131,23 +131,21 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-/*
-ArtistHandler manages requests for individual artist pages.
-It checks for the correct HTTP method and URL format, extracts the artist ID
-from the URL, fetches the artist data, and renders it using the artist template.
-If any errors occur during this process, it renders appropriate error pages.
+type ArtistData struct {
+	Artist    Artist    `json:"artist"`
+	Dates     DateEntry `json:"dates"`
+	Locations Location  `json:"locations"`
+	Relations Relation  `json:"relations"`
+}
 
-Parameters:
-  - w: http.ResponseWriter to write the response
-  - r: *http.Request containing the request details
-*/
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
 		return
 	}
+
 	if !strings.HasPrefix(r.URL.Path, "/artist/") || len(strings.Split(r.URL.Path, "/")) != 3 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
 		return
 	}
 
@@ -156,179 +154,53 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, http.StatusBadRequest, "Artist ID not found")
 		return
 	}
+
 	id := id1[len(id1)-1]
 
+	// Fetch artist details
+	baseURL := "https://groupietrackers.herokuapp.com/api/artists/"
+	artistResult, err := ReadArtist(baseURL, id)
+	if err != nil || artistResult.ID == 0 {
+		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+		return
+	}
+
+	// Fetch related data: dates, locations, relations
+	datesResult, err := ReadDate("https://groupietrackers.herokuapp.com/api/dates/", id)
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching dates")
+		return
+	}
+
+	locationsResult, err := ReadLocation("https://groupietrackers.herokuapp.com/api/locations/", id)
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching locations")
+		return
+	}
+
+	relationsResult, err := ReadRelations("https://groupietrackers.herokuapp.com/api/relation/", id)
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching relations")
+		return
+	}
+
+	// Combine all results into a single struct to pass to the template
+	artistData := ArtistData{
+		Artist:    artistResult,
+		Dates:     datesResult,
+		Locations: locationsResult,
+		Relations: relationsResult,
+	}
+
+	// Load and execute the artist template with combined data
 	temp1, err := template.ParseFiles("template/artist.html")
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error loading template")
 		return
 	}
-	baseURL := "https://groupietrackers.herokuapp.com/api/artists/"
 
-	result, err := ReadArtist(baseURL, id)
-	if err != nil {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	if result.ID == 0 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	err = temp1.Execute(w, result)
+	err = temp1.Execute(w, artistData)
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
-	}
-}
-
-/*
-LocationHandler manages requests for location information of artists.
-It verifies the HTTP method, extracts the location ID from the URL,
-fetches the location data, and renders it using the locations template.
-If any errors occur during this process, it renders appropriate error pages.
-
-Parameters:
-  - w: http.ResponseWriter to write the response
-  - r: *http.Request containing the request details
-*/
-func LocationHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
-		return
-	}
-
-	id1 := strings.Split(r.URL.Path, "/")
-	if len(id1) < 3 {
-		renderError(w, http.StatusBadRequest, "Artist ID not found")
-		return
-	}
-	id := id1[len(id1)-1]
-
-	temp1, err := template.ParseFiles("template/locations.html")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error loading template")
-		return
-	}
-	url := "https://groupietrackers.herokuapp.com/api/locations/"
-
-	Result, err := ReadLocation(url, id)
-	if err != nil {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	if Result.ID == 0 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	err = temp1.Execute(w, Result)
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error executing template")
-	}
-}
-
-/*
-DateHandler manages requests for concert date information of artists.
-It verifies the HTTP method, extracts the artist ID from the URL,
-fetches the date data, and renders it using the dates template.
-If any errors occur during this process, it renders appropriate error pages.
-
-Parameters:
-  - w: http.ResponseWriter to write the response
-  - r: *http.Request containing the request details
-*/
-func DateHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
-		return
-	}
-
-	parts := strings.Split(r.URL.Path, "/")
-	if len(parts) != 3 || parts[1] != "dates" {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	id := parts[2]
-	if id == "" {
-		renderError(w, http.StatusBadRequest, "Artist ID not found")
-		return
-	}
-
-	temp1, err := template.ParseFiles("template/dates.html")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error loading template")
-		return
-	}
-
-	baseURL := "https://groupietrackers.herokuapp.com/api/dates/"
-	Result, err := ReadDate(baseURL, id)
-	if err != nil {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	if Result.ID == 0 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	err = temp1.Execute(w, Result)
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error executing template")
-	}
-}
-
-/*
-RelationHandler manages requests for relation information of artists.
-It verifies the HTTP method, extracts the relation ID from the URL,
-fetches the relation data, and renders it using the relation template.
-If any errors occur during this process, it renders appropriate error pages.
-
-Parameters:
-  - w: http.ResponseWriter to write the response
-  - r: *http.Request containing the request details
-*/
-func RelationHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		renderError(w, http.StatusMethodNotAllowed, "Method not allowed")
-		return
-	}
-	if !strings.HasPrefix(r.URL.Path, "/relation/") || len(strings.Split(r.URL.Path, "/")) != 3 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	id1 := strings.Split(r.URL.Path, "/")
-	if len(id1) < 3 {
-		renderError(w, http.StatusBadRequest, "ID not found")
-		return
-	}
-	id := id1[len(id1)-1]
-
-	relationTemplate, err := template.ParseFiles("template/relation.html")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error loading template: "+err.Error())
-		return
-	}
-	baseURL := "https://groupietrackers.herokuapp.com/api/relation/"
-
-	relations, err := ReadRelations(baseURL, id)
-	if err != nil {
-
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	if relations.ID == 0 {
-		renderError(w, http.StatusNotFound, "Oops! We Can't find that page")
-		return
-	}
-
-	err = relationTemplate.Execute(w, relations)
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Failed to render template: "+err.Error())
 	}
 }
