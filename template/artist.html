@@ -29,6 +29,10 @@
         .shortcut-item {
             margin-bottom: 8px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +63,7 @@
             <div class="links">
                 <p><strong></strong>
                     {{if .Locations.Locations}}
-                    <a href="#locations">View Locations</a>
+                    <a href="#" onclick="showSection('locations')">View Locations</a>
                     {{else}}
                     N/A
                     {{end}}
@@ -67,7 +71,7 @@
 
                 <p><strong></strong>
                     {{if .Dates.Dates}}
-                    <a href="#dates">View Dates</a>
+                    <a href="#" onclick="showSection('dates')">View Dates</a>
                     {{else}}
                     N/A
                     {{end}}
@@ -75,10 +79,14 @@
 
                 <p><strong></strong>
                     {{if .Relations.Locations}}
-                    <a href="#relations">View Relations</a>
+                    <a href="#" onclick="showSection('relations')">View Relations</a>
                     {{else}}
                     N/A
                     {{end}}
+                </p>
+
+                <p><strong></strong>
+                    <a href="#" onclick="showAllSections()">View All</a>
                 </p>
             </div>
 
@@ -87,8 +95,9 @@
             </div>
         </div>
 
-        <section id="locations">
+        <section id="locations" class="hidden">
             <h3>Location Details</h3>
+            <div class="relation-card">
             <ul class="location-list">
                 {{range .Locations.Locations}}
                 <li>{{.}}</li>
@@ -96,18 +105,22 @@
                 <li>No locations available</li>
                 {{end}}
             </ul>
+            </div>
         </section>
 
-        <section id="dates">
+        <section id="dates" class="hidden">
             <h3>Concert Dates</h3>
+            <div class="relation-card">
+
             <ul class="dates-list">
                 {{range .Dates.Dates}}
                 <li>{{.}}</li>
                 {{end}}
             </ul>
+            </div>
         </section>
 
-        <section id="relations">
+        <section id="relations" class="hidden">
             <h3>Relations</h3>
             {{range $location, $dates := .Relations.Locations}}
             <div class="relation-card">
@@ -136,6 +149,24 @@
                 history.forward();
             }
         });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        function showAllSections() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('hidden');
+            });
+        }
     </script>
 </body>
 </html>
