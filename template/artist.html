@@ -42,6 +42,9 @@
             <div class="dropdown-content">
                 <div class="shortcut-item">Alt + ← : Go Back</div>
                 <div class="shortcut-item">Alt + → : Go Forward</div>
+                <div class="shortcut-item">Alt + L : View Locations</div>
+                <div class="shortcut-item">Alt + D : View Datess</div>
+                <div class="shortcut-item">Alt + R : View Relations</div>
             </div>
         </div>
 
@@ -98,25 +101,24 @@
         <section id="locations" class="hidden">
             <h3>Location Details</h3>
             <div class="relation-card">
-            <ul class="location-list">
-                {{range .Locations.Locations}}
-                <li>{{.}}</li>
-                {{else}}
-                <li>No locations available</li>
-                {{end}}
-            </ul>
+                <ul class="location-list">
+                    {{range .Locations.Locations}}
+                    <li>{{.}}</li>
+                    {{else}}
+                    <li>No locations available</li>
+                    {{end}}
+                </ul>
             </div>
         </section>
 
         <section id="dates" class="hidden">
             <h3>Concert Dates</h3>
             <div class="relation-card">
-
-            <ul class="dates-list">
-                {{range .Dates.Dates}}
-                <li>{{.}}</li>
-                {{end}}
-            </ul>
+                <ul class="dates-list">
+                    {{range .Dates.Dates}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
             </div>
         </section>
 
@@ -139,7 +141,7 @@
             </div>
             {{end}}
         </section>
-    </div> 
+    </div>
 
     <script>
         document.addEventListener('keydown', function(event) {
@@ -147,6 +149,12 @@
                 history.back();
             } else if (event.altKey && event.key === 'ArrowRight') {
                 history.forward();
+            } else if (event.altKey && event.key.toLowerCase() === 'l') {
+                showSection('locations');
+            } else if (event.altKey && event.key.toLowerCase() === 'd') {
+                showSection('dates');
+            } else if (event.altKey && event.key.toLowerCase() === 'r') {
+                showSection('relations');
             }
         });
 
