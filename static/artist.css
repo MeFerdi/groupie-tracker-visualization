@@ -161,3 +161,19 @@ section {
         width: 150px;
     }
 }
+
+/* styles.css */
+@media (max-width: 400px) {
+    .sidebar {
+        display: none; /* Hide sidebar on small screens */
+    }
+
+    .main-content {
+        padding: 10px; 
+        font-size: 14px; 
+    }
+
+    .button {
+        width: 100%;
+    }
+}
