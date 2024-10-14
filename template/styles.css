@@ -29,6 +29,7 @@ h1 {
     border-radius: 5px;
 }
 
+/* Styles for navigation button */
 .nav-button {
     cursor: pointer; 
     border: none; 
