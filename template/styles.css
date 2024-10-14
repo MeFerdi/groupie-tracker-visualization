@@ -44,6 +44,7 @@ h1 {
     border-radius: 5px;
 }
 
+/* Hover effects for buttons */
 .nav-button:hover, .dropdown-button:hover {
     opacity: 0.8; /* Change opacity on hover for visual feedback */
 }
