@@ -5,17 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Page</title>
     <link rel="stylesheet" type="text/css" href="/static/error.css" />
+    <style>
+        .info-link a {
+            color: green;
+            text-decoration: none;
+        }
+
+        .info-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <style>
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #12201c5b;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .shortcut-item {
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <div class="dropdown">
+            <button>Shortcuts</button>
+            <div class="dropdown-content">
+                <div class="shortcut-item">Alt + ← : Go Back</div>
+                <div class="shortcut-item">Alt + → : Go Forward</div>
+            </div>
+        </div>
         <h1>ERROR</h1>
         <img src="/static/images/error.jpeg" alt="Error Illustration" class="error-image">
         <div class="error-code">{{.Code}}</div>
         <div class="error-message">{{.Message}}</div>
+
+        <div class="info-link">
+            <p>If you need more information or clarification, please <a href="mailto:apikojuma94@gmail.com?subject=Error%20Code%20{{.Code}}">contact support</a>.</p>
+        </div>
         <div class="back-button-container">
             <button class="nav-button" onclick="window.history.back()">← Back</button>
         </div>
+
     </div>
 </body>
 </html>
-s
