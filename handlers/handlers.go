@@ -136,6 +136,7 @@ type ArtistData struct {
 	Dates     DateEntry `json:"dates"`
 	Locations Location  `json:"locations"`
 	Relations Relation  `json:"relations"`
+	Section   string    `json:"section"`
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
@@ -145,7 +146,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !strings.HasPrefix(r.URL.Path, "/artist/") || len(strings.Split(r.URL.Path, "/")) != 3 {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -157,11 +158,18 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := id1[len(id1)-1]
 
+	// Check for the section query parameter
+	section := r.URL.Query().Get("section")
+	if section != "" && section != "locations" && section != "dates" && section != "relations" && section != "all" {
+		renderError(w, http.StatusNotFound, "The section you're trying to access is unavailable")
+		return
+	}
+
 	// Fetch artist details
 	baseURL := "https://groupietrackers.herokuapp.com/api/artists/"
 	artistResult, err := ReadArtist(baseURL, id)
 	if err != nil || artistResult.ID == 0 {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -190,6 +198,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		Dates:     datesResult,
 		Locations: locationsResult,
 		Relations: relationsResult,
+		Section:   section, // Add this line to pass the section to the template
 	}
 
 	// Load and execute the artist template with combined data

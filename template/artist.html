@@ -68,30 +68,30 @@
             <div class="links">
                 <p><strong></strong>
                     {{if .Locations.Locations}}
-                    <a href="#locations" onclick="showSection('locations')">View Locations</a>
+                    <a href="?section=locations">View Locations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
-
+            
                 <p><strong></strong>
                     {{if .Dates.Dates}}
-                    <a href="#dates" onclick="showSection('dates')">View Dates</a>
+                    <a href="?section=dates">View Dates</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
-
+            
                 <p><strong></strong>
                     {{if .Relations.Locations}}
-                    <a href="#relations" onclick="showSection('relations')">View Relations</a>
+                    <a href="?section=relations">View Relations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
-
+            
                 <p><strong></strong>
-                    <a href="#" onclick="showAllSections()">View All</a>
+                    <a href="?section=all">View All</a>
                 </p>
             </div>
 
@@ -149,37 +149,79 @@
     </div>
 
     <script>
-        document.addEventListener('keydown', function(event) {
-            if (event.altKey && event.key === 'ArrowLeft') {
-                history.back();
-            } else if (event.altKey && event.key === 'ArrowRight') {
-                history.forward();
-            } else if (event.altKey && event.key.toLowerCase() === 'l') {
-                showSection('locations');
-            } else if (event.altKey && event.key.toLowerCase() === 'd') {
-                showSection('dates');
-            } else if (event.altKey && event.key.toLowerCase() === 'r') {
-                showSection('relations');
-            }
-        });
-
-        function showSection(sectionId) {
+        function showSection(sectionId, updateUrl = true) {
             const sections = document.querySelectorAll('section');
             sections.forEach(section => {
-                if (section.id === sectionId) {
+                if (section.id === sectionId || sectionId === 'all') {
                     section.classList.remove('hidden');
                 } else {
                     section.classList.add('hidden');
                 }
             });
+    
+            if (updateUrl) {
+                // Update URL without adding to browser history
+                const url = new URL(window.location);
+                url.searchParams.set('section', sectionId);
+                window.history.replaceState({}, '', url);
+            }
+    
+            // Smooth scroll to the section
+            if (sectionId !== 'all') {
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
         }
-
-        function showAllSections() {
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                section.classList.remove('hidden');
+    
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const section = urlParams.get('section') || 'all';
+            showSection(section, false);
+        }
+    
+        // Call handleUrlParams on page load
+        handleUrlParams();
+    
+        // Listen for popstate events (browser back/forward)
+        window.addEventListener('popstate', handleUrlParams);
+    
+        // Update event listeners
+        document.addEventListener('keydown', function(event) {
+            if (event.altKey) {
+                event.preventDefault(); // Prevent default browser behavior for Alt key combinations
+                switch (event.key.toLowerCase()) {
+                    case 'arrowleft':
+                        history.back();
+                        break;
+                    case 'arrowright':
+                        history.forward();
+                        break;
+                    case 'l':
+                        showSection('locations');
+                        break;
+                    case 'd':
+                        showSection('dates');
+                        break;
+                    case 'r':
+                        showSection('relations');
+                        break;
+                    case 'a':
+                        showSection('all');
+                        break;
+                }
+            }
+        });
+    
+        // Prevent default anchor behavior and use showSection instead
+        document.querySelectorAll('.links a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const section = this.getAttribute('href').split('=')[1];
+                showSection(section);
             });
-        }
+        });
     </script>
 </body>
 </html>
