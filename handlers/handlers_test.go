@@ -208,4 +208,3 @@ func TestArtistHandler(t *testing.T) {
 		}
 	}
 }
-
