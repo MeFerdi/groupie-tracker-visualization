@@ -1,83 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Name}} - Artist Details</title>
+    <title>{{.Artist.Name}} - Artist Details</title>
     <link rel="stylesheet" type="text/css" href="/static/artist.css" />
-</head>
+    <style>
+        .dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
 
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #12201c5b;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            right: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .shortcut-item {
+            margin-bottom: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
 <body>
-    {{if .}}
-    <div class="artist">
-        <img src="{{.Image}}" alt="{{.Name}} Image">
-        <div class="details">
-            <h2>{{.Name}}</h2>
+    <div class="container">
+        <div class="dropdown">
+            <button>Shortcuts</button>
+            <div class="dropdown-content">
+                <div class="shortcut-item">Alt + ← : Go Back</div>
+                <div class="shortcut-item">Alt + → : Go Forward</div>
+                <div class="shortcut-item">Alt + L : View Locations</div>
+                <div class="shortcut-item">Alt + D : View Datess</div>
+                <div class="shortcut-item">Alt + R : View Relations</div>
+            </div>
+        </div>
+
+        <div class="artist-header">
+            <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Image" class="artist-image">
+            <h2>{{.Artist.Name}}</h2>
+        </div>
+
+        <div class="artist-details">
             <p><strong>Members:</strong></p>
             <ul class="members-list">
-                {{range .Members}}
+                {{range .Artist.Members}}
                 <li>{{.}}</li>
                 {{end}}
             </ul>
-            <p><strong>Creation Date:</strong> {{.CreationDate}}</p>
-            <p><strong>First Album:</strong> {{.FirstAlbum}}</p>
+            <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+            <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
 
             <div class="links">
-                <p><strong>Locations:</strong>
-                    {{if .ID}}
-                    <a href="/locations/{{.ID}}">View Locations</a>
+                <p><strong></strong>
+                    {{if .Locations.Locations}}
+                    <a href="#locations" onclick="showSection('locations')">View Locations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
 
-                <p><strong>Dates:</strong>
-                    {{if .ID}}
-                    <a href="/dates/{{.ID}}">View Dates</a>
+                <p><strong></strong>
+                    {{if .Dates.Dates}}
+                    <a href="#dates" onclick="showSection('dates')">View Dates</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
 
-                <p><strong>Relations:</strong>
-                    {{if .ID}}
-                    <a href="/relation/{{.ID}}">View Relations</a>
+                <p><strong></strong>
+                    {{if .Relations.Locations}}
+                    <a href="#relations" onclick="showSection('relations')">View Relations</a>
                     {{else}}
                     N/A
                     {{end}}
                 </p>
-                <div>
-                    <button class="back-button" onclick="history.back()">← Back</button>
-                </div>
+
+                <p><strong></strong>
+                    <a href="#" onclick="showAllSections()">View All</a>
+                </p>
+            </div>
+
+            <div class="back-button-container">
+                <button class="back-button" onclick="history.back()">← Back</button>
             </div>
         </div>
+
+        <section id="locations" class="hidden">
+            <h3>Location Details</h3>
+            <div class="relation-card">
+                <ul class="location-list">
+                    {{range .Locations.Locations}}
+                    <li>{{.}}</li>
+                    {{else}}
+                    <li>No locations available</li>
+                    {{end}}
+                </ul>
+            </div>
+        </section>
+
+        <section id="dates" class="hidden">
+            <h3>Concert Dates</h3>
+            <div class="relation-card">
+                <ul class="dates-list">
+                    {{range .Dates.Dates}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        </section>
+
+        <section id="relations" class="hidden">
+            <h3>Relations</h3>
+            {{if .Relations.Locations}}
+                {{range $location, $dates := .Relations.Locations}}
+                    <div class="relation-card">
+                        <h4>Location: {{$location}}</h4>
+                        <p><strong>Dates:</strong></p>
+                        <ul class="dates-list">
+                            {{range $dates}}
+                                <li>{{ . }}</li>
+                            {{else}}
+                                <li>No dates available</li>
+                            {{end}}
+                        </ul>
+                    </div>
+                {{end}}
+            {{else}}
+                <div class="relation-card">
+                    <h4>No relations available</h4>
+                </div>
+            {{end}}
+        </section>
     </div>
-    {{else}}
-    <p>No artist information found.</p>
-    {{end}}
 
     <script>
         document.addEventListener('keydown', function(event) {
-            // Check for Alt + H
-            if (event.altKey && event.key === 'h') {
-                document.querySelector('.back-button').click(); // Click the back button
-            }
-            // Check for Alt + L
-            else if (event.altKey && event.key === 'l') {
-                window.location.href = "/locations/{{.ID}}"; // Redirect to locations page
-            }
-            // Check for Alt + D
-            else if (event.altKey && event.key === 'd') {
-                window.location.href = "/dates/{{.ID}}"; // Redirect to dates page
-            }
-            // Check for Alt + R
-            else if (event.altKey && event.key === 'r') {
-                window.location.href = "/relation/{{.ID}}"; // Redirect to relations page
+            if (event.altKey && event.key === 'ArrowLeft') {
+                history.back();
+            } else if (event.altKey && event.key === 'ArrowRight') {
+                history.forward();
+            } else if (event.altKey && event.key.toLowerCase() === 'l') {
+                showSection('locations');
+            } else if (event.altKey && event.key.toLowerCase() === 'd') {
+                showSection('dates');
+            } else if (event.altKey && event.key.toLowerCase() === 'r') {
+                showSection('relations');
             }
         });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        function showAllSections() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('hidden');
+            });
+        }
     </script>
-
 </body>
-
 </html>

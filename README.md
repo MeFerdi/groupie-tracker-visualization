@@ -1,6 +1,6 @@
-# GROUPIE TRACKER
+# GROUPIE TRACKER VISUALIZATION
 ![](https://www.globallogic.com/wp-content/uploads/2021/11/1024-Develop-Restful-API-using-Go-and-Gin.jpg)
-Groupie Trackers consists on receiving a given API and manipulate the data contained in it, in order to create a site, displaying the information.
+Groupie-Tracker-Visualizations consists of manipulating the data coming from the API and displaying it in the most presentable way possible.
 
 ## API Structure
 The API, that consists of four parts:

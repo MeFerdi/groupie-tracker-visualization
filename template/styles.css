@@ -1,9 +1,12 @@
+/* Style for header elements (h1) */
 h1 {
-    color: green;
-    text-decoration: underline
+    color: green; 
+    text-decoration: underline;
 }
+
+/* Dropdown content styles */
 .dropdown-content {
-    display: none;
+    display: none; 
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -11,34 +14,37 @@ h1 {
     padding: 10px;
 }
 
+/* Styles for dropdown button */
 .dropdown-button {
-    cursor: pointer;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
+    cursor: pointer; 
+    border: none; 
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 10px 15px; 
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
     border-radius: 5px;
 }
 
+/* Styles for navigation button */
 .nav-button {
-    cursor: pointer;
-    border: none;
-    background-color: #008CBA;
+    cursor: pointer; 
+    border: none; 
+    background-color: #008CBA; 
     color: white;
-    padding: 10px 15px;
-    text-align: center;
+    padding: 10px 15px; 
+    text-align: center; 
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
     border-radius: 5px;
 }
 
+/* Hover effects for buttons */
 .nav-button:hover, .dropdown-button:hover {
-    opacity: 0.8;
+    opacity: 0.8; /* Change opacity on hover for visual feedback */
 }
