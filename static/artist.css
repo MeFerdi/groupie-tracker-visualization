@@ -1,0 +1,179 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    font-size: large;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(51, 49, 49, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(46, 196, 33, 0.1);
+    text-align: center;
+}
+
+.artist-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.artist-image {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(46, 196, 33, 0.3);
+    margin-bottom: 20px;
+}
+
+.artist-details {
+    margin-bottom: 30px;
+}
+
+h2, h3, h4 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #2ec421, #1b8e29);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+.members-list, .dates-list, .location-list {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.members-list li, .dates-list li, .location-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(46, 196, 33, 0.2);
+}
+
+.links {
+    margin-top: 20px;
+}
+
+.links p {
+    margin: 10px 0;
+}
+
+.links a {
+    color: #2ec421;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: #1b8e29;
+    text-decoration: underline;
+}
+
+.back-button-container {
+    margin-top: 30px;
+}
+
+.back-button {
+    background-color: #2ec421;
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: #1b8e29;
+    transform: scale(1.05);
+}
+
+section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: rgba(46, 196, 33, 0.05);
+    border-radius: 10px;
+}
+
+.relation-card {
+    background-color: rgba(18, 18, 18, 0.8);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(46, 196, 33, 0.1);
+}
+
+.relation-card h4 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.relation-card ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.relation-card li {
+    margin-bottom: 5px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #12201c5b;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.shortcut-item {
+    margin-bottom: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    .artist-image {
+        width: 150px;
+    }
+}
+
+/* styles.css */
+@media (max-width: 400px) {
+    .sidebar {
+        display: none; /* Hide sidebar on small screens */
+    }
+
+    .main-content {
+        padding: 10px; 
+        font-size: 14px; 
+    }
+
+    .button {
+        width: 100%;
+    }
+}
